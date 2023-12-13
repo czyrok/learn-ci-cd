@@ -158,25 +158,25 @@ jobs:
       - run:
           name: "Copying back"
           command: |
-            sshpass -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "mkdir /root/backend/releases/test_release/"
-            sshpass -p 'ysnT3cZ32Y7V' scp -r ./backend/ root@169.45.64.60:/root/backend/releases/test_release/
+            sshpass -o StrictHostKeyChecking=no -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "mkdir /root/backend/releases/test_release/"
+            sshpass -o StrictHostKeyChecking=no -p 'ysnT3cZ32Y7V' scp -r ./backend/ root@169.45.64.60:/root/backend/releases/test_release/
       - run:
           name: "Copying front"
           command: |
-            sshpass -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "mkdir /root/frontend/releases/test_release/"
-            sshpass -p 'ysnT3cZ32Y7V' scp -r ./frontend/ root@169.45.64.60:/root/frontend/releases/test_release/
+            sshpass -o StrictHostKeyChecking=no -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "mkdir /root/frontend/releases/test_release/"
+            sshpass -o StrictHostKeyChecking=no -p 'ysnT3cZ32Y7V' scp -r ./frontend/ root@169.45.64.60:/root/frontend/releases/test_release/
       - run:
           name: "Deploying back"
           command: |
-            sshpass -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "rm /root/backend/current"
-            sshpass -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "ln -s /root/backend/releases/test_release /root/backend/current"
-            sshpass -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "sudo systemctl restart backend-service"
+            sshpass -o StrictHostKeyChecking=no -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "rm /root/backend/current"
+            sshpass -o StrictHostKeyChecking=no -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "ln -s /root/backend/releases/test_release /root/backend/current"
+            sshpass -o StrictHostKeyChecking=no -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "sudo systemctl restart backend-service"
       - run:
           name: "Deploying front"
           command: |
-            sshpass -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "rm /root/frontend/current"
-            sshpass -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "ln -s /root/frontend/releases/test_release /root/frontend/current"
-            sshpass -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "sudo systemctl restart frontend-service"
+            sshpass -o StrictHostKeyChecking=no -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "rm /root/frontend/current"
+            sshpass -o StrictHostKeyChecking=no -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "ln -s /root/frontend/releases/test_release /root/frontend/current"
+            sshpass -o StrictHostKeyChecking=no -p 'ysnT3cZ32Y7V' ssh root@169.45.64.60 "sudo systemctl restart frontend-service"
 
 workflows:
   backend-ci-workflow:
