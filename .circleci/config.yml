@@ -19,7 +19,7 @@ jobs:
           command: "npm install"
       - run:
           name: "Backend lint"
-          working_directory: ~/learn-ci-cd/backend
+          working_directory: ./learn-ci-cd/backend
           command: "npm run lint-check"
 
 # Orchestrate jobs using workflows
