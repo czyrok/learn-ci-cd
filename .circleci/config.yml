@@ -132,15 +132,14 @@ jobs:
 
   deploy-project:
     docker:
-      - image: node:20-alpine3.19
+      - image: node:lts
     steps:
       - checkout
       - run:
           name: "Installing SSH"
           command: |
-            apk update
-            apk upgrade
-            apk add --update --no-cache openssh sshpass
+            apt-get update
+            apt-get install -y sshpass
       - run:
           name: "Installing Node Modules"
           command: "npm install"
