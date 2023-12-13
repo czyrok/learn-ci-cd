@@ -120,9 +120,9 @@ jobs:
       - run:
           name: "Installing Git"
           command: |
-            "apk update"
-            "apk upgrade"
-            "apk add --no-cache git"
+            apk update
+            apk upgrade
+            apk add --no-cache git
       - run:
           name: "Installing Node Modules"
           command: "npm install"
