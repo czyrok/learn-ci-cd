@@ -169,7 +169,7 @@ jobs:
             sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "ln -s "/root/backend/releases/$RELEASE_DIRECTORY_NAME" /root/backend/current"
             sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "sudo systemctl restart backend-service"
             sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "mkdir -p /root/frontend/releases/$RELEASE_DIRECTORY_NAME/"
-            sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ./frontend/release/* "$SSH_USER@$SSH_HOST":"/root/frontend/releases/$RELEASE_DIRECTORY_NAME/"
+            sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ./frontend/dist/* "$SSH_USER@$SSH_HOST":"/root/frontend/releases/$RELEASE_DIRECTORY_NAME/"
             sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "rm /root/frontend/current"
             sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "ln -s "/root/frontend/releases/$RELEASE_DIRECTORY_NAME" /root/frontend/current"
             sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "sudo systemctl restart frontend-service"
