@@ -136,10 +136,10 @@ workflows:
   cd-workflow:
     jobs:
       - build-project:
-        filters:
-          branches:
-            only:
-              - main
+          filters:
+            branches:
+              only:
+                - main
       - make-release:
           requires:
             - build-project
