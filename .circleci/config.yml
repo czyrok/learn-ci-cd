@@ -48,9 +48,58 @@ jobs:
           working_directory: ./backend
           command: "npm run unit-tests"
 
+  frontend-lint:
+    docker:
+      - image: node:18.19.0-alpine3.19
+    steps:
+      - checkout
+      - run:
+          name: "Installing Node Modules"
+          command: "npm install"
+      - run:
+          name: "Frontend lint"
+          working_directory: ./frontend
+          command: "npm run lint-check"
+          
+  frontend-type-check:
+    docker:
+      - image: node:18.19.0-alpine3.19
+    steps:
+      - checkout
+      - run:
+          name: "Installing Node Modules"
+          command: "npm install"
+      - run:
+          name: "Migrating Database"
+          working_directory: ./backend
+          command: "npm run db-install"
+      - run:
+          name: "Frontend type check"
+          working_directory: ./frontend
+          command: "npm run type-check"
+
+  frontend-unit-tests:
+    docker:
+      - image: node:18.19.0-alpine3.19
+    steps:
+      - checkout
+      - run:
+          name: "Installing Node Modules"
+          command: "npm install"
+      - run:
+          name: "Frontend unit tests"
+          working_directory: ./frontend
+          command: "npm run unit-tests"
+
 workflows:
   backend-ci-workflow:
     jobs:
       - backend-lint
       - backend-type-check
       - backend-unit-tests
+
+  frontend-ci-workflow:
+    jobs:
+      - frontend-lint
+      - frontend-type-check
+      - frontend-unit-tests
