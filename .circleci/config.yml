@@ -140,7 +140,7 @@ jobs:
           command: |
             apk update
             apk upgrade
-            apk add --no-cache sshpass
+            apk add --update --no-cache openssh sshpass
       - run:
           name: "Installing Node Modules"
           command: "npm install"
