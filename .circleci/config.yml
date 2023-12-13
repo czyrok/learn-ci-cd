@@ -92,10 +92,6 @@ jobs:
           command: "npm run unit-tests"
 
   build-project:
-    filters:
-      branches:
-        only:
-          - main
     docker:
       - image: node:18.19.0-alpine3.19
     steps:
@@ -117,10 +113,6 @@ jobs:
           command: "npm run build"
 
   make-release:
-    filters:
-      branches:
-        only:
-          - main
     docker:
       - image: node:18.19.0-alpine3.19
     steps:
@@ -143,7 +135,11 @@ workflows:
 
   cd-workflow:
     jobs:
-      - build-project
+      - build-project:
+        filters:
+          branches:
+            only:
+              - main
       - make-release:
           requires:
             - build-project
