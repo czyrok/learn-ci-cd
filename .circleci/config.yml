@@ -142,4 +142,4 @@ workflows:
       - build-project
       - make-release:
         requires:
-          - build-project
+            - build-project
