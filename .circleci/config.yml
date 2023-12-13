@@ -91,6 +91,39 @@ jobs:
           working_directory: ./frontend
           command: "npm run unit-tests"
 
+  build-project:
+    docker:
+      - image: node:18.19.0-alpine3.19
+    steps:
+      - checkout
+      - run:
+          name: "Installing Node Modules"
+          command: "npm install"
+      - run:
+          name: "Migrating Database"
+          working_directory: ./backend
+          command: "npm run db-install"
+      - run:
+          name: "Building back"
+          working_directory: ./backend
+          command: "npm run build"
+      - run:
+          name: "Building front"
+          working_directory: ./frontend
+          command: "npm run build"
+
+  make-release:
+    docker:
+      - image: node:18.19.0-alpine3.19
+    steps:
+      - checkout
+      - run:
+          name: "Installing Node Modules"
+          command: "npm install"
+      - run:
+          name: "Making release"
+          command: "npm run make-release"
+
 workflows:
   backend-ci-workflow:
     jobs:
@@ -103,3 +136,16 @@ workflows:
       - frontend-lint
       - frontend-type-check
       - frontend-unit-tests
+
+  cd-workflow:
+    jobs:
+      - build-project:
+          filters:
+            branches:
+              only:
+                - main
+      - make-release:
+          filters:
+            branches:
+              only:
+                - main
