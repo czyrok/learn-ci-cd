@@ -166,7 +166,7 @@ jobs:
       - run:
           name: "Copying back"
           command: |
-            sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -L "$SSH_HOST" -l "$SSH_USER" "mkdir -p /root/backend/releases/$RELEASE_DIRECTORY_NAME/"
+            sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "mkdir -p /root/backend/releases/$RELEASE_DIRECTORY_NAME/"
             sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ./backend/release/* "$SSH_USER@$SSH_HOST":"/root/backend/releases/$RELEASE_DIRECTORY_NAME/"
       - run:
           name: "Deploying back"
