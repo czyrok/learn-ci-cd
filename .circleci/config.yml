@@ -159,12 +159,12 @@ jobs:
           name: "Copying back"
           command: |
             sshpass -p 'ysnT3cZ32Y7V' ssh -o StrictHostKeyChecking=no root@169.45.64.60 "mkdir -p /root/backend/releases/test_release/"
-            sshpass -p 'ysnT3cZ32Y7V' scp -o StrictHostKeyChecking=no -r ./backend/ root@169.45.64.60:/root/backend/releases/test_release/
+            sshpass -p 'ysnT3cZ32Y7V' scp -o StrictHostKeyChecking=no -r ./backend/dist/* root@169.45.64.60:/root/backend/releases/test_release/
       - run:
           name: "Copying front"
           command: |
             sshpass -p 'ysnT3cZ32Y7V' ssh -o StrictHostKeyChecking=no root@169.45.64.60 "mkdir -p /root/frontend/releases/test_release/"
-            sshpass -p 'ysnT3cZ32Y7V' scp -o StrictHostKeyChecking=no -r ./frontend/ root@169.45.64.60:/root/frontend/releases/test_release/
+            sshpass -p 'ysnT3cZ32Y7V' scp -o StrictHostKeyChecking=no -r ./frontend/dist/* root@169.45.64.60:/root/frontend/releases/test_release/
       - run:
           name: "Deploying back"
           command: |
