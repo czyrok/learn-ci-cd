@@ -116,6 +116,10 @@ jobs:
     docker:
       - image: node:18.19.0-alpine3.19
     steps:
+      - checkout
+      - run:
+          name: "Installing Node Modules"
+          command: "npm install"
       - run:
           name: "Making release"
           command: "npm run make-release"
@@ -141,5 +145,7 @@ workflows:
               only:
                 - main
       - make-release:
-          requires:
-            - build-project
+          filters:
+            branches:
+              only:
+                - main
