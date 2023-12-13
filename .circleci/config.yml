@@ -141,5 +141,5 @@ workflows:
     jobs:
       - build-project
       - make-release:
-        requires:
+          requires:
             - build-project
