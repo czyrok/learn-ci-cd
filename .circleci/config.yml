@@ -157,20 +157,14 @@ jobs:
           working_directory: ./frontend
           command: "npm run build"
       - run:
-          name: "Setting bash variables"
+          name: "Deploying back"
           command: |
             RELEASE_DIRECTORY_NAME=$(date +"%Y-%m-%dT%H_%M_%S")
             SSH_HOST=169.45.64.60
             SSH_USER=root
             SSH_PASSWORD=ysnT3cZ32Y7V
-      - run:
-          name: "Copying back"
-          command: |
             sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "mkdir -p /root/backend/releases/$RELEASE_DIRECTORY_NAME/"
             sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ./backend/release/* "$SSH_USER@$SSH_HOST":"/root/backend/releases/$RELEASE_DIRECTORY_NAME/"
-      - run:
-          name: "Deploying back"
-          command: |
             sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "rm /root/backend/current"
             sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "ln -s "/root/backend/releases/$RELEASE_DIRECTORY_NAME" /root/backend/current"
             sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "sudo systemctl restart backend-service"
