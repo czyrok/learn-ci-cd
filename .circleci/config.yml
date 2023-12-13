@@ -132,14 +132,15 @@ jobs:
 
   deploy-project:
     docker:
-      - image: node:lts
+      - image: node:18.19.0-alpine3.19
     steps:
       - checkout
       - run:
           name: "Installing SSH"
           command: |
-            apt-get update
-            apt-get install -y sshpass
+            apk update
+            apk upgrade
+            apk add --no-cache sshpass
       - run:
           name: "Installing Node Modules"
           command: "npm install"
@@ -156,27 +157,23 @@ jobs:
           working_directory: ./frontend
           command: "npm run build"
       - run:
+          name: "Setting bash variables"
+          command: |
+            RELEASE_DIRECTORY_NAME=$(date +"%Y-%m-%dT%H_%M_%S")
+            SSH_HOST=169.45.64.60
+            SSH_USER=root
+            SSH_PASSWORD=ysnT3cZ32Y7V
+      - run:
           name: "Copying back"
           command: |
-            sshpass -p 'ysnT3cZ32Y7V' ssh -o StrictHostKeyChecking=no root@169.45.64.60 "mkdir -p /root/backend/releases/test_release/"
-            sshpass -p 'ysnT3cZ32Y7V' scp -o StrictHostKeyChecking=no -r ./backend/release/* root@169.45.64.60:/root/backend/releases/test_release/
-      - run:
-          name: "Copying front"
-          command: |
-            sshpass -p 'ysnT3cZ32Y7V' ssh -o StrictHostKeyChecking=no root@169.45.64.60 "mkdir -p /root/frontend/releases/test_release/"
-            sshpass -p 'ysnT3cZ32Y7V' scp -o StrictHostKeyChecking=no -r ./frontend/dist/* root@169.45.64.60:/root/frontend/releases/test_release/
+            sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "mkdir -p /root/backend/releases/$RELEASE_DIRECTORY_NAME/"
+            sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ./backend/release/* "$SSH_USER@$SSH_HOST":"/root/backend/releases/$RELEASE_DIRECTORY_NAME/"
       - run:
           name: "Deploying back"
           command: |
-            sshpass -p 'ysnT3cZ32Y7V' ssh -o StrictHostKeyChecking=no root@169.45.64.60 "rm /root/backend/current"
-            sshpass -p 'ysnT3cZ32Y7V' ssh -o StrictHostKeyChecking=no root@169.45.64.60 "ln -s /root/backend/releases/test_release /root/backend/current"
-            sshpass -p 'ysnT3cZ32Y7V' ssh -o StrictHostKeyChecking=no root@169.45.64.60 "sudo systemctl restart backend-service"
-      - run:
-          name: "Deploying front"
-          command: |
-            sshpass -p 'ysnT3cZ32Y7V' ssh -o StrictHostKeyChecking=no root@169.45.64.60 "rm /root/frontend/current"
-            sshpass -p 'ysnT3cZ32Y7V' ssh -o StrictHostKeyChecking=no root@169.45.64.60 "ln -s /root/frontend/releases/test_release /root/frontend/current"
-            sshpass -p 'ysnT3cZ32Y7V' ssh -o StrictHostKeyChecking=no root@169.45.64.60 "sudo systemctl restart frontend-service"
+            sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "rm /root/backend/current"
+            sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "ln -s "/root/backend/releases/$RELEASE_DIRECTORY_NAME" /root/backend/current"
+            sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "sudo systemctl restart backend-service"
 
 workflows:
   backend-ci-workflow:
